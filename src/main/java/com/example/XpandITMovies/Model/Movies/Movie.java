@@ -24,6 +24,10 @@ public class Movie {
         this.revenue = revenue;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

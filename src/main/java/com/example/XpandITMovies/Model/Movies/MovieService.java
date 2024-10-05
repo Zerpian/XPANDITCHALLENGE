@@ -3,6 +3,7 @@ package com.example.XpandITMovies.Model.Movies;
 import com.example.XpandITMovies.Infrastructure.Movies.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class MovieService {
     }
 
     public List<Movie> getAllMovies() {
+
         return repository.findAll();
     }
 
@@ -43,4 +45,6 @@ public class MovieService {
     public void deleteMovie(Long id) {
         repository.deleteById(id);
     }
+
+
 }
