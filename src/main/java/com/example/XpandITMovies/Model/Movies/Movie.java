@@ -21,10 +21,10 @@ public class Movie {
     protected Movie() {}
 
     public Movie(String title, LocalDate launchDate, int rank, double revenue) {
-        this.title = title;
-        this.launchDate = launchDate;
-        this.rank = rank;
-        this.revenue = revenue;
+        setTitle(title);
+        setLaunchDate(launchDate);
+        setRank(rank);
+        setRevenue(revenue);
     }
 
     public Long getId() {
@@ -52,18 +52,40 @@ public class Movie {
     }
 
     public void setRevenue(double revenue) {
-        this.revenue = revenue;
+        this.revenue = checkRevenue(revenue);
     }
 
     public void setRank(int rank) {
-        this.rank = rank;
+        this.rank = checkRank(rank);
     }
 
     public void setLaunchDate(LocalDate launchDate) {
         this.launchDate = launchDate;
     }
 
+    /**
+     * ensures the rank cannot be higher than 10 or lower than 0
+     * @param rank
+     * @return rank or throws exception
+     */
     private int checkRank(int rank){
-        return 1;
+        if(rank >= 0 && rank <=10 ){
+            return rank;
+        }else{
+            throw new IllegalArgumentException("Rank must be between 0 and 10");
+        }
+    }
+
+    /**
+     * ensures the revenue cannot be a negative number
+     * @param revenue
+     * @return revenue or throws exception
+     */
+    private double checkRevenue(double revenue){
+        if(revenue >= 0){
+            return revenue;
+        }else{
+            throw new IllegalArgumentException("Revenue must be non-negative");
+        }
     }
 }
