@@ -16,4 +16,6 @@ public class MovieModelAssembler implements RepresentationModelAssembler<Movie, 
                 linkTo(methodOn(MovieController.class).getMovieById(movie.getId())).withSelfRel(),
                 linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies"));
     }
+
+
 }

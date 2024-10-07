@@ -15,6 +15,9 @@ public class Movie {
     private int rank;
     private double revenue;
 
+    /**
+     * for orm tool use
+     */
     protected Movie() {}
 
     public Movie(String title, LocalDate launchDate, int rank, double revenue) {
@@ -58,5 +61,9 @@ public class Movie {
 
     public void setLaunchDate(LocalDate launchDate) {
         this.launchDate = launchDate;
+    }
+
+    private int checkRank(int rank){
+        return 1;
     }
 }

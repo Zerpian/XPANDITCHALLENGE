@@ -3,9 +3,12 @@ package com.example.XpandITMovies.Model.Movies;
 import com.example.XpandITMovies.Infrastructure.Movies.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -46,5 +49,8 @@ public class MovieService {
         repository.deleteById(id);
     }
 
-
+    @Query("select a from Movie a where a.launchDate = :launchDate")
+    public List<Movie> filterMovies(@Param("launchDate") LocalDate launchDate){
+        return repository.filterMovies(launchDate);
+    }
 }
