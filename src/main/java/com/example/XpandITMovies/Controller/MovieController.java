@@ -1,14 +1,10 @@
 package com.example.XpandITMovies.Controller;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.XpandITMovies.Model.Movies.Movie;
 import com.example.XpandITMovies.Model.Movies.MovieModelAssembler;
 import com.example.XpandITMovies.Model.Movies.MovieService;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class MovieController {
@@ -40,6 +34,7 @@ public class MovieController {
                 linkTo(methodOn(MovieController.class).postMovie(movie)).withSelfRel(),
                 linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies"));*/
         //return movieModelAssembler.toModel(this.movieService.postMovie(movie));
+
         return ResponseEntity.created(movieModelAssembler.toModel(this.movieService.postMovie(movie))
                 .getRequiredLink(IanaLinkRelations.SELF).toUri()).body(movieModelAssembler.toModel(this.movieService.postMovie(movie)));
     }
@@ -56,7 +51,7 @@ public class MovieController {
                 movieModelAssembler.toCollectionModel(this.movieService.getAllMovies())
                         .getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(movieModelAssembler.toCollectionModel(this.movieService.getAllMovies()));*/
-        return ResponseEntity.ok(movieModelAssembler.toCollectionModel(this.movieService.getAllMovies()));
+        return ResponseEntity.ok(this.movieService.getAllMovies());
     }
 
     @GetMapping("/movies/{id}")
@@ -83,6 +78,7 @@ public class MovieController {
                 linkTo(methodOn(MovieController.class).putMovie(movie, id)).withSelfRel(),
                 linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies"));*/
         //return movieModelAssembler.toModel(this.movieService.putMovie(movie, id));
+
         return ResponseEntity.created(movieModelAssembler.toModel(this.movieService.putMovie(movie, id))
                 .getRequiredLink(IanaLinkRelations.SELF).toUri()).body(movieModelAssembler.toModel(this.movieService.putMovie(movie, id)));
     }

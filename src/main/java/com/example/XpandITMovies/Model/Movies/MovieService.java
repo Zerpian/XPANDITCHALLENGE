@@ -16,8 +16,11 @@ public class MovieService {
 
     private final MovieRepository repository;
 
-    public MovieService(MovieRepository repository) {
+    private final MovieModelAssembler movieModelAssembler;
+
+    public MovieService(MovieRepository repository, MovieModelAssembler movieModelAssembler) {
         this.repository = repository;
+        this.movieModelAssembler = movieModelAssembler;
     }
 
     public List<Movie> getAllMovies() {
@@ -40,9 +43,10 @@ public class MovieService {
             movie.setRank(newMovie.getRank());
             movie.setRevenue(newMovie.getRevenue());
             return repository.save(movie);
-        }).orElseGet(() -> {
-            return repository.save(newMovie);
-        });
+        }).orElseThrow(() ->
+            new RuntimeException("Movie not found")
+
+        );
     }
 
     public void deleteMovie(Long id) {
