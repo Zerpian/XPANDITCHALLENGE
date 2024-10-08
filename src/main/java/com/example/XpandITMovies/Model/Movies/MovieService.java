@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,30 +26,52 @@ public class MovieService {
         this.movieModelAssembler = movieModelAssembler;
     }
 
-    public List<Movie> getAllMovies() {
+    public CollectionModel<EntityModel<Movie>> getAllMovies() {
+        List<Movie> movies = repository.findAll();
 
-        return repository.findAll();
+        return movieModelAssembler.toCollectionModel(movies);
     }
 
-    public Movie postMovie(Movie movie) {
-        return repository.save(movie);
+    public EntityModel<Movie> postMovie(Movie movie) {
+        Movie movieCreated = repository.save(movie);
+
+
+        if(movieCreated.getId() != null){
+            return movieModelAssembler.toModel(movieCreated);
+        }else{
+            return null;
+        }
     }
 
-    public Movie getMovie(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found") );
+    public EntityModel<Movie> getMovie(Long id) {
+
+        Movie movie = repository.findById(id).orElse(null);
+        if(movie != null) {
+            return movieModelAssembler.toModel(movie);
+
+        }else{
+           return null;
+        }
+
+
     }
 
-    public Movie putMovie(Movie newMovie, Long id) {
-        return repository.findById(id).map(movie -> {
+    public EntityModel<Movie> putMovie(Movie newMovie, Long id) {
+        Movie movieUpdated=repository.findById(id).map(movie -> {
             movie.setTitle(newMovie.getTitle());
             movie.setLaunchDate(newMovie.getLaunchDate());
             movie.setRank(newMovie.getRank());
             movie.setRevenue(newMovie.getRevenue());
             return repository.save(movie);
-        }).orElseThrow(() ->
-            new RuntimeException("Movie not found")
+        }).orElse(null);
 
-        );
+
+
+        if(movieUpdated!=null) {
+            return movieModelAssembler.toModel(movieUpdated);
+        }else{
+            return null;
+        }
     }
 
     public void deleteMovie(Long id) {
@@ -54,7 +79,9 @@ public class MovieService {
     }
 
     @Query("select a from Movie a where a.launchDate = :launchDate")
-    public List<Movie> filterMovies(@Param("launchDate") LocalDate launchDate){
-        return repository.filterMovies(launchDate);
+    public CollectionModel<EntityModel<Movie>> filterMovies(@Param("launchDate") LocalDate launchDate){
+        List<Movie> movies =repository.filterMovies(launchDate);
+
+        return movieModelAssembler.toCollectionModel(movies);
     }
 }
