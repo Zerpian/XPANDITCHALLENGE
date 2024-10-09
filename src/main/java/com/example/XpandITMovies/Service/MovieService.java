@@ -3,8 +3,6 @@ package com.example.XpandITMovies.Service;
 import com.example.XpandITMovies.Infrastructure.Movies.MovieRepository;
 import com.example.XpandITMovies.Model.Movies.Movie;
 import com.example.XpandITMovies.Model.Movies.MovieModelAssembler;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class MovieService {
     /**
      * Communicates with the repository to return all movies in the database.
      * Calls movieModelAssembler to wrap the whole list in the EntityModel class and returns it
-     * @return
+     * @return the list of the movies wrapped in
      */
     public CollectionModel<EntityModel<Movie>> getAllMovies() {
         List<Movie> movies = repository.findAll();
@@ -40,7 +38,7 @@ public class MovieService {
      * calls movieModelAssembler to wrap the movie in the EntityModel class and returns it,
      * otherwise it returns null.
      * @param movie
-     * @return
+     * @return the movie saved wrapped in entity model
      */
     public EntityModel<Movie> postMovie(Movie movie) {
         Movie movieCreated = repository.save(movie);
@@ -53,6 +51,13 @@ public class MovieService {
         }
     }
 
+    /**
+     * Communicates with the repository to return a movie identified by its id.
+     * If it is successful it will return the movie wrapped in EntityModel class,
+     * otherwise it returns null
+     * @param id movie id
+     * @return
+     */
     public EntityModel<Movie> getMovie(Long id) {
 
         Movie movie = repository.findById(id).orElse(null);
@@ -66,6 +71,15 @@ public class MovieService {
 
     }
 
+    /**
+     * Communicates with the repository to update the data in a movie, identified by its id, with
+     * the new data from newMovie.
+     * If its successful it will return the movie wrapped in EntityModel class,
+     * otherwise it will return null
+     * @param newMovie movie object containing the new data
+     * @param id movie id of the record that will be updated
+     * @return
+     */
     public EntityModel<Movie> putMovie(Movie newMovie, Long id) {
         Movie movieUpdated=repository.findById(id).map(movie -> {
             movie.setTitle(newMovie.getTitle());
@@ -84,6 +98,13 @@ public class MovieService {
         }
     }
 
+    /**
+     * Communicates with the repository to delete a movie identified by its id. If its successful
+     * it will return the movie wrapped in EntityModel class,
+     * otherwise it will return null.
+     * @param id
+     * @return
+     */
     public EntityModel<Movie> deleteMovie(Long id) {
         Movie movie=repository.findById(id).orElse(null);
         if(movie!=null) {
@@ -95,7 +116,12 @@ public class MovieService {
 
     }
 
-
+    /**
+     * Communicates with the repository to return all movies in the database that match with the launchDate provided.
+     * Calls movieModelAssembler to wrap the whole list in the EntityModel class and returns it
+     * @param launchDate
+     * @return
+     */
     public CollectionModel<EntityModel<Movie>> filterMovies(LocalDate launchDate){
         List<Movie> movies =repository.filterMovies(launchDate);
 

@@ -1,6 +1,6 @@
 package com.example.XpandITMovies.Model.Movies;
 
-import java.util.Objects;
+
 import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
