@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("select a from Movie a where a.launchDate = :launchDate")
-    public List<Movie> filterMovies(@Param("launchDate") LocalDate launchDate);
+    List<Movie> filterMovies(@Param("launchDate") LocalDate launchDate);
 
 }

@@ -16,7 +16,7 @@ public class Movie {
     private double revenue;
 
     /**
-     * for orm tool use
+     * constructor for orm tool use
      */
     protected Movie() {}
 

@@ -7,9 +7,14 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
-
+    /**
+     * wraps movie in an entity model class  and adds links to it
+     * @param movie
+     * @return
+     */
     @Override
     public EntityModel<Movie> toModel(Movie movie) {
         return EntityModel.of(movie,

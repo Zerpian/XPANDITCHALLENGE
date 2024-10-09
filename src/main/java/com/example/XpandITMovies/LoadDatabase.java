@@ -16,7 +16,9 @@ class LoadDatabase {
 
     @Bean
     CommandLineRunner initDatabase(MovieRepository repository) {
-
+        /**
+         * database starts with some default records
+         */
         return args -> {
             log.info("Preloading " + repository.save(new Movie("Star Wars",LocalDate.parse("2000-08-01"), 7, 2000.00)));
             log.info("Preloading " + repository.save(new Movie("Rambo", LocalDate.parse("2000-01-01"), 8, 3000.00)));
